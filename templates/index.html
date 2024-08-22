@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Autômatos</title>
+</head>
+<body>
+    <h1>Simulador de Autômatos</h1>
+
+    <form action="/" method="post">
+        <label for="estados">Estados (separados por vírgula):</label><br>
+        <input type="text" name="estados"><br><br>
+
+        <label for="alfabeto">Alfabeto (separados por vírgula):</label><br>
+        <input type="text" name="alfabeto"><br><br>
+
+        <label for="transicoes">Transições (formato Python):</label><br>
+        <input type="text" name="transicoes"><br><br>
+
+        <label for="estado_inicial">Estado Inicial:</label><br>
+        <input type="text" name="estado_inicial"><br><br>
+
+        <label for="estados_aceitacao">Estados de Aceitação (separados por vírgula):</label><br>
+        <input type="text" name="estados_aceitacao"><br><br>
+
+        <button type="submit">Processar</button>
+    </form>
+</body>
+</html>

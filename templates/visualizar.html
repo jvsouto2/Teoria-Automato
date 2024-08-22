@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Autômatos</title>
+</head>
+<body>
+    <h1>Autômatos Gerados</h1>
+
+    <h2>AFN</h2>
+    <img src="/static/{{ afn_imagem }}" alt="AFN">
+
+    <h2>AFD</h2>
+    <img src="/static/{{ afd_imagem }}" alt="AFD">
+    
+    {% if afd_min_imagem %}
+    <h2>AFD Minimizado</h2>
+    <img src="/static/{{ afd_min_imagem }}" alt="AFD Minimizado">
+    {% endif %}
+
+    <!-- Botões para minimizar, simular palavras e verificar equivalência -->
+    <form action="/minimizar" method="post">
+        <button type="submit">Minimizar AFD</button>
+    </form>
+    <br>
+
+    <form action="/simular" method="post">
+        <label for="palavra">Palavra para Simulação:</label>
+        <input type="text" id="palavra" name="palavra" required>
+        <button type="submit">Simular Palavra</button>
+    </form>
+    <br>
+
+    <form action="/equivalencia" method="post">
+        <button type="submit">Verificar Equivalência entre AFN e AFD</button>
+    </form>
+
+    <br><br>
+    <a href="/">Voltar</a>
+</body>
+</html>
