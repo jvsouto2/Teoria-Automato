@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request
 from afn import AFN
 from afd import AFD
+from turing_machine import TuringMachine
 import os
+import json
+
 
 app = Flask(__name__)
 
@@ -79,6 +82,30 @@ def equivalencia():
     except Exception as e:
         print(f"Erro durante a verificação de equivalência: {e}")
         return "Erro ao verificar a equivalência entre AFN e AFD."
+    
+@app.route('/turing_machine', methods=['POST'])
+def turing_machine():
+    global turing_machine
+    try:
+        mt_config = json.loads(request.form['mt_config'])
+        palavra_turing = request.form['palavra_turing']
+
+        turing_machine = TuringMachine(
+            states=mt_config['states'],
+            input_alphabet=mt_config['input_alphabet'],
+            tape_alphabet=mt_config['tape_alphabet'],
+            transitions=mt_config['transitions'],
+            initial_state=mt_config['initial_state'],
+            accept_state=mt_config['accept_state'],
+            reject_state=mt_config['reject_state']
+        )
+
+        resultado = turing_machine.run(palavra_turing)
+        resultado_texto = "Sim" if resultado else "Não"
+        
+        return render_template('resultado_turing.html', palavra=palavra_turing, resultado=resultado_texto)
+    except Exception as e:
+        return f"Erro durante a simulação da Máquina de Turing: {e}"
 
 
 if __name__ == '__main__':

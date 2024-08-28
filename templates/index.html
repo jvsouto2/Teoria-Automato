@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Autômatos</title>
+    <title>Simulador de Autômatos e Máquina de Turing</title>
 </head>
 <body>
-    <h1>Simulador de Autômatos</h1>
+    <h1>Simulador de Autômatos e Máquina de Turing</h1>
 
     <form action="/" method="post">
+        <h2>Entrada para Autômatos</h2>
         <label for="estados">Estados (separados por vírgula):</label><br>
         <input type="text" name="estados"><br><br>
 
@@ -25,6 +26,19 @@
         <input type="text" name="estados_aceitacao"><br><br>
 
         <button type="submit">Processar</button>
+    </form>
+
+    <hr>
+
+    <form action="/turing_machine" method="post">
+        <h2>Entrada para Máquina de Turing</h2>
+        <label for="mt_config">Configuração da Máquina (formato JSON):</label><br>
+        <textarea name="mt_config" rows="10" cols="50"></textarea><br><br>
+
+        <label for="palavra_turing">Palavra para Simulação:</label><br>
+        <input type="text" name="palavra_turing"><br><br>
+
+        <button type="submit">Simular Máquina de Turing</button>
     </form>
 </body>
 </html>
