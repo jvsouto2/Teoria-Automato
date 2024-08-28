@@ -47,7 +47,7 @@ def minimizar():
     try:
         afd_minimizado = afd.minimizar()
         nome_arquivo_afd_min = afd_minimizado.desenhar('afd_min')
-        return render_template('visualizar.html', afn_imagem=None, afd_imagem=nome_arquivo_afd_min, afd_min_imagem=nome_arquivo_afd_min)
+        return render_template('visualizar.html', afn_imagem=None, afd_imagem=nome_arquivo_afd_min)
     except Exception as e:
         print(f"Erro durante a minimização: {e}")
         return "Erro ao minimizar o AFD."
@@ -69,6 +69,9 @@ def equivalencia():
     global afn, afd
 
     try:
+        if afn is None or afd is None:
+            raise ValueError("Os autômatos precisam ser gerados antes de verificar a equivalência.")
+        
         equivalente = afn.verificar_equivalencia(afd)
         resultado = "Os autômatos são equivalentes." if equivalente else "Os autômatos não são equivalentes."
         
@@ -76,6 +79,7 @@ def equivalencia():
     except Exception as e:
         print(f"Erro durante a verificação de equivalência: {e}")
         return "Erro ao verificar a equivalência entre AFN e AFD."
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

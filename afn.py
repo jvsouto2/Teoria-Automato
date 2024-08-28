@@ -1,4 +1,4 @@
-import random
+import itertools
 from graphviz import Digraph
 from automato_finito import AutomatoFinito
 from afd import AFD
@@ -54,7 +54,6 @@ class AFN(AutomatoFinito):
                         novos_estados.append(proximos_estados)
                     novas_transicoes[(nome_estado_atual, simbolo)] = estado_map[proximos_estados]
                 else:
-                    # Ignorar a transição se o próximo estado é vazio
                     pass
 
             if estado_atual & self.estados_aceitacao:
@@ -66,21 +65,31 @@ class AFN(AutomatoFinito):
 
         return AFD(estados_afd, self.alfabeto, novas_transicoes, estado_inicial_afd, estados_aceitacao_afd)
     
-    def gerar_palavras_aleatorias(self, alfabeto, tamanho_min, tamanho_max, quantidade):
+    def gerar_palavras_iter(self, alfabeto, tamanho_max):
         palavras = []
-        for _ in range(quantidade):
-            tamanho_palavra = random.randint(tamanho_min, tamanho_max)
-            palavra = ''.join(random.choice(alfabeto) for _ in tamanho_palavra)
-            palavras.append(palavra)
+        for tamanho in range(1, tamanho_max + 1):
+            palavras.extend(''.join(p) for p in itertools.product(alfabeto, repeat=tamanho))
         return palavras
     
     def verificar_equivalencia(self, afd):
-        # Gerar 100 palavras aleatórias com comprimento entre 1 e 10
-        palavras_teste = self.gerar_palavras_aleatorias(list(self.alfabeto), 1, 10, 100)
+        palavras_teste = self.gerar_palavras_iter(list(self.alfabeto), 10)
         
         for palavra in palavras_teste:
-            aceita_afn = self.aceita_palavra(palavra)
+            aceita_afn = self.aceitar_palavra(palavra)
             aceita_afd = afd.aceita_palavra(palavra)
             if aceita_afn != aceita_afd:
                 return False
         return True
+
+    def aceitar_palavra(self, palavra):
+        return self._aceita_palavra_recursivo(self.estado_inicial, palavra)
+
+    def _aceita_palavra_recursivo(self, estado_atual, palavra):
+        if not palavra:
+            return estado_atual in self.estados_aceitacao
+        simbolo = palavra[0]
+        proximos_estados = self.transicoes.get((estado_atual, simbolo), [])
+        for proximo_estado in proximos_estados:
+            if self._aceita_palavra_recursivo(proximo_estado, palavra[1:]):
+                return True
+        return False
