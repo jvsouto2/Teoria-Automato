@@ -8,7 +8,6 @@ import json
 
 app = Flask(__name__)
 
-# Variáveis globais para armazenar os autômatos gerados
 afn = None
 afd = None
 
@@ -17,21 +16,18 @@ def index():
     global afn, afd
     if request.method == 'POST':
         try:
-            # Processar entrada do usuário para criar AFN
             estados = request.form.get('estados').split(',')
             alfabeto = request.form.get('alfabeto').split(',')
-            transicoes = eval(request.form.get('transicoes'))  # Receber como dicionário: {('q0', 'a'): ['q1'], ...}
+            transicoes = eval(request.form.get('transicoes')) 
             estado_inicial = request.form.get('estado_inicial')
             estados_aceitacao = request.form.get('estados_aceitacao').split(',')
 
             afn = AFN(set(estados), set(alfabeto), transicoes, estado_inicial, set(estados_aceitacao))
             print("AFN criado com sucesso...")
             
-            # Converter para AFD usando o método simplificado
             afd = afn.converter_para_afd()
             print("Conversão simplificada de AFN para AFD concluída.")
 
-            # Desenhar os autômatos (se o método de desenho também estiver funcionando corretamente)
             nome_arquivo_afn = afn.desenhar('afn')
             nome_arquivo_afd = afd.desenhar('afd')
 
@@ -100,13 +96,12 @@ def turing_machine():
             reject_state=mt_config['reject_state']
         )
 
-        resultado = turing_machine.run(palavra_turing)
+        resultado, fita_final = turing_machine.run(palavra_turing)
         resultado_texto = "Sim" if resultado else "Não"
         
-        return render_template('resultado_turing.html', palavra=palavra_turing, resultado=resultado_texto)
+        return render_template('resultado_turing.html', palavra=palavra_turing, resultado=resultado_texto, fita_final=fita_final)
     except Exception as e:
         return f"Erro durante a simulação da Máquina de Turing: {e}"
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
