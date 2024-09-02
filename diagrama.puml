@@ -1,0 +1,46 @@
+@startuml
+
+class AutomatoFinito {
+    - estados: Set[String]
+    - alfabeto: Set[String]
+    - transicoes: Map[(String, String), String]
+    - estado_inicial: String
+    - estados_aceitacao: Set[String]
+    --
+    + desenhar(nome_arquivo: String): String
+}
+
+class AFN {
+    + converter_para_afd(): AFD
+    + aceitar_palavra(palavra: String): Boolean
+    + verificar_equivalencia(afd: AFD): Boolean
+    + gerar_palavras_aleatorias(): List[String]
+}
+
+class AFD {
+    + aceita_palavra(palavra: String): Boolean
+    + minimizar(): AFD
+    + desenhar(nome_arquivo: String): String
+}
+
+class TuringMachine {
+    - states: Set[String]
+    - input_alphabet: Set[String]
+    - tape_alphabet: Set[String]
+    - transitions: Map[(String, String), (String, String, String)]
+    - initial_state: String
+    - accept_state: String
+    - reject_state: String
+    - current_state: String
+    - tape: Map[Int, String]
+    - head_position: Int
+    --
+    + reset(word: String)
+    + step()
+    + run(word: String): (Boolean, String)
+}
+
+AutomatoFinito <|-- AFN
+AutomatoFinito <|-- AFD
+
+@enduml
